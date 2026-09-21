@@ -2251,29 +2251,54 @@ window.PORTFOLIO_CONFIG = {
      - endpoint ""   -> bundled Node server at /api/submit (server/server.js)
    The backend emails the resume to the visitor and sends owner notifications with the visitor name as the sender display name.
    Sent as text/plain so the browser treats it as a "simple" request (no CORS
-   preflight, which Apps Script cannot answer). */
-window.PORTFOLIO_SEND = async function(payload){
-  const cfg = window.PORTFOLIO_CONFIG || {};
-  const url = (cfg.endpoint || "").trim();
-  if (!url) throw new Error("Resume backend is not connected yet. Please set the Google Apps Script Web App URL.");
-  // Visitor IP (looked up in the browser; skipped quietly if it takes too long)
-  let visitorIp = "";
-  try {
-    const ipCtl = new AbortController();
-    const ipTimer = setTimeout(() => ipCtl.abort(), 3000);
-    const ipRes = await fetch("https://api.ipify.org?format=json", { signal: ipCtl.signal });
-    clearTimeout(ipTimer);
-    const ipJson = await ipRes.json();
-    visitorIp = String((ipJson && ipJson.ip) || "");
-  } catch (e) { visitorIp = ""; }
+    preflight, which Apps Script cannot answer). */
+ window.PORTFOLIO_SEND = async function(payload) {
+  const url = "https://script.google.com/macros/s/AKfycbwz8BNrqr3zGeVOzdOWL5S1lMc2BdvtUdP8s_7QWykpZgN0vC0YzRjcKGDGVNR2sFTybA/exec";
 
-  const body = Object.assign({}, payload, {
-    ip: visitorIp,
-    page: location.href,
-    referrer: document.referrer || "",
-    timezone: (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || "",
-    userAgent: navigator.userAgent || ""
+  const name = String(payload.name || "").trim();
+  const email = String(payload.email || "").trim();
+  const message = String(payload.message || "").trim();
+
+  if (!name || !email || !message) {
+    throw new Error("Please fill in all fields.");
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Please enter a valid email address.");
+  }
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = url;
+  form.target = "portfolioContactFrame";
+  form.style.display = "none";
+
+  const fields = {
+    name: name,
+    email: email,
+    message: message
+  };
+
+  Object.entries(fields).forEach(([key, value]) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
   });
+
+  document.body.appendChild(form);
+  form.submit();
+
+  setTimeout(() => {
+    form.remove();
+  }, 2000);
+
+  return {
+    ok: true,
+    message: "Message sent successfully."
+  };
+};
 
   let res, data;
   try {
@@ -3606,6 +3631,8 @@ html body .gate-field input:focus{border:0!important;border-bottom:2px solid #5E
   .contact-form-card{padding:24px 18px!important;}
 }
 </style>
+
+<iframe name="portfolioContactFrame" style="display:none;"></iframe>
 
 </body>
 </html>
