@@ -1801,7 +1801,22 @@ problem solving and professional development.
 
       <div class="form-field">
         <label for="contactMessage">Message</label>
-        <textarea id="contactMessage" required></textarea>
+        <textarea
+  id="contactMessage"
+  required
+  style="
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    width: 100%;
+    min-height: 120px;
+    resize: none;
+    font-size: 18px;
+  "
+  placeholder="Write your message here..."
+></textarea>
+        
       </div>
 
       <button class="btn btn-primary" type="submit">
@@ -3678,3 +3693,33 @@ html body .gate-field input:focus{border:0!important;border-bottom:2px solid #5E
 
 </body>
 </html>
+
+#contactForm input,
+#contactForm textarea{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid rgba(255,255,255,.2);
+    color:#fff;
+    font-size:18px;
+    padding:12px 0;
+    outline:none;
+    box-shadow:none;
+}
+
+#contactForm textarea{
+    resize:none;
+    min-height:120px;
+}
+
+#contactForm input:focus,
+#contactForm textarea:focus{
+    border-bottom:1px solid #d4af37;
+    background:transparent;
+}
+
+#contactForm textarea::placeholder,
+#contactForm input::placeholder{
+    color:rgba(255,255,255,.5);
+}
+
