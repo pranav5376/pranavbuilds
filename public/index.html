@@ -2121,7 +2121,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('contactEmail').value.trim();
       const message = document.getElementById('contactMessage').value.trim();
 
-      if (!name || !email || !message) { contactForm.reportValidity(); return; }
+      const isResumeRequest = payload.action === "resume" || !!payload.deliverResume;
+
+  if (!name || !email || (!isResumeRequest && !message)) { contactForm.reportValidity(); return; }
       submitButton.disabled = true;
       submitButton.innerHTML = '<span></span> Sending...';
       status.textContent = '';
@@ -2264,7 +2266,9 @@ window.PORTFOLIO_CONFIG = {
   const email = String(payload.email || "").trim();
   const message = String(payload.message || "").trim();
 
-  if (!name || !email || !message) {
+  const isResumeRequest = payload.action === "resume" || !!payload.deliverResume;
+
+  if (!name || !email || (!isResumeRequest && !message)) {
     throw new Error("Please fill in all fields.");
   }
 
