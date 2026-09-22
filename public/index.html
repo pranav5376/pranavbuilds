@@ -2280,21 +2280,8 @@ window.PORTFOLIO_CONFIG = {
    Sent as text/plain so the browser treats it as a "simple" request (no CORS
     preflight, which Apps Script cannot answer). */
  window.PORTFOLIO_SEND = async function(payload) {
+
   const url = "https://script.google.com/macros/s/AKfycbzB-JLzUHqH1K8kyxYMuMUjj-ydHFJUHilbAJaoGhNMRcJZ2g0Biu1gZqjHcG5zeB179g/exec";
-
-  const name = String(payload.name || "").trim();
-  const email = String(payload.email || "").trim();
-  const message = String(payload.message || "").trim();
-
-  const isResumeRequest = payload.action === "resume" || !!payload.deliverResume;
-
-  if (!name || !email || (!isResumeRequest && !message)) {
-    throw new Error("Please fill in all fields.");
-  }
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    throw new Error("Please enter a valid email address.");
-  }
 
   const form = document.createElement("form");
   form.method = "POST";
@@ -2302,11 +2289,11 @@ window.PORTFOLIO_CONFIG = {
   form.target = "portfolioContactFrame";
   form.style.display = "none";
 
-  ["name", "email", "message"].forEach(function(key) {
+  Object.keys(payload).forEach(function(key) {
     const input = document.createElement("input");
     input.type = "hidden";
     input.name = key;
-    input.value = String(payload[key] || "");
+    input.value = payload[key];
     form.appendChild(input);
   });
 
@@ -2319,7 +2306,7 @@ window.PORTFOLIO_CONFIG = {
 
   return {
     ok: true,
-    message: "Message sent successfully."
+    message: "Submitted successfully"
   };
 };
 /* ---- Mobile menu ---- */
@@ -3627,6 +3614,7 @@ html body .gate-field input:focus{border:0!important;border-bottom:2px solid #5E
 
 </body>
 </html>
+
 
 
 
