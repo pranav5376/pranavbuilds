@@ -2141,7 +2141,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('contactEmail').value.trim();
       const message = document.getElementById('contactMessage').value.trim();
 
-      const isResumeRequest = payload.action === "resume" || !!payload.deliverResume;
 
   if (!name || !email || (!isResumeRequest && !message)) { contactForm.reportValidity(); return; }
       submitButton.disabled = true;
