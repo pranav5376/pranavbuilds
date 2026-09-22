@@ -2243,7 +2243,7 @@ window.PORTFOLIO_CONFIG = {
   // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE (ends with /exec).
   // Leave "" only if you run the bundled Node server (server/server.js),
   // which then serves /api/submit on the same site.
-  endpoint : "https://script.google.com/macros/s/AKfycbyqA_H2kNXbRLnachHeAb6nuw_h0NRSjNkMy-0ey9x0u0tFj5ff09-TobGh-mecT-wZ/exec",
+  endpoint : "https://script.google.com/macros/s/AKfycbzB-JLzUHqH1K8kyxYMuMUjj-ydHFJUHilbAJaoGhNMRcJZ2g0Biu1gZqjHcG5zeB179g/exec",
   // Optional public PDF link (Google Drive / Dropbox, "anyone with the link").
   // If set, the site also opens it in a new tab right after the email is sent,
   // so the visitor gets the resume instantly as well as in their inbox.
@@ -2260,7 +2260,7 @@ window.PORTFOLIO_CONFIG = {
    Sent as text/plain so the browser treats it as a "simple" request (no CORS
     preflight, which Apps Script cannot answer). */
  window.PORTFOLIO_SEND = async function(payload) {
-  const url = "https://script.google.com/macros/s/AKfycbyqA_H2kNXbRLnachHeAb6nuw_h0NRSjNkMy-0ey9x0u0tFj5ff09-TobGh-mecT-wZ/exec";
+  const url = "https://script.google.com/macros/s/AKfycbzB-JLzUHqH1K8kyxYMuMUjj-ydHFJUHilbAJaoGhNMRcJZ2g0Biu1gZqjHcG5zeB179g/exec";
 
   const name = String(payload.name || "").trim();
   const email = String(payload.email || "").trim();
