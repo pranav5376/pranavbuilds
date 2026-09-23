@@ -2179,6 +2179,8 @@ document.addEventListener('DOMContentLoaded', () => {
   addEventListener('resize',onScroll,{passive:true});
   update();
 })();
+</script>
+
 <script>  
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
@@ -2191,7 +2193,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let contactStartedAt = Date.now();
 
     contactForm.addEventListener('submit', async (event) => {
-  alert('FORM SUBMIT DETECTED');
       event.preventDefault();
       const name = document.getElementById('contactName').value.trim();
       const email = document.getElementById('contactEmail').value.trim();
