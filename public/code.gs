@@ -32,10 +32,10 @@ function doPost(e) {
     }
 
     if (isResumeRequest) {
-      return handleResumeRequest(name, email);
+      return handleResumeRequest(name, email, params);
     }
 
-    return handleContactMessage(name, email, message);
+    return handleContactMessage(name, email, message, params);
 
   } catch (err) {
 
@@ -71,7 +71,27 @@ function parseRequest_(e) {
   return params;
 }
 
-function handleContactMessage(name, email, message) {
+function buildVisitorReport_(label, name, email, params) {
+  var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  var lines = [
+    'New portfolio ' + label,
+    '',
+    'FORMAT CHECKED',
+    'Name: ' + name,
+    'Gmail: ' + email + (emailOk ? ' (format-checked, not confirmed by code)' : ' (format check FAILED)'),
+    'Entered at: ' + Utilities.formatDate(new Date(), 'UTC', "yyyy-MM-dd HH:mm:ss 'UTC'"),
+    'Time zone: ' + (params.timezone || '-'),
+    'Device: ' + (params.userAgent || '-'),
+    'Came from: ' + (params.referrer || '-'),
+    'Page: ' + (params.page || '-'),
+    'IP address: ' + (params.ip || '-')
+  ];
+
+  return lines.join('\n');
+}
+
+function handleContactMessage(name, email, message, params) {
 
   MailApp.sendEmail({
     to: OWNER_EMAIL,
@@ -81,7 +101,9 @@ function handleContactMessage(name, email, message) {
       'Name: ' + name + '\n' +
       'Email: ' + email + '\n\n' +
       'Message:\n' +
-      message,
+      message +
+      '\n\n----------------------------------------\n' +
+      buildVisitorReport_('contact form message', name, email, params),
     replyTo: email
   });
 
@@ -91,7 +113,7 @@ function handleContactMessage(name, email, message) {
   });
 }
 
-function handleResumeRequest(name, email) {
+function handleResumeRequest(name, email, params) {
 
   MailApp.sendEmail({
     to: OWNER_EMAIL,
@@ -99,7 +121,9 @@ function handleResumeRequest(name, email) {
     body:
       'A visitor downloaded your resume.\n\n' +
       'Name: ' + name + '\n' +
-      'Email: ' + email
+      'Email: ' + email +
+      '\n\n----------------------------------------\n' +
+      buildVisitorReport_('resume download', name, email, params)
   });
 
   if (RESUME_DRIVE_FILE_ID) {
