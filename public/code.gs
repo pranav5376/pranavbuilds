@@ -95,7 +95,7 @@ function handleContactMessage(name, email, message, params) {
 
   MailApp.sendEmail({
     to: OWNER_EMAIL,
-    subject: 'Portfolio Contact Form',
+    subject: 'Portfolio Contact Form – ' + name,
     body:
       'NEW CONTACT FORM MESSAGE\n\n' +
       'Name: ' + name + '\n' +
@@ -117,7 +117,7 @@ function handleResumeRequest(name, email, params) {
 
   MailApp.sendEmail({
     to: OWNER_EMAIL,
-    subject: 'Resume Download Request',
+    subject: 'Resume Download Request – ' + name,
     body:
       'A visitor downloaded your resume.\n\n' +
       'Name: ' + name + '\n' +
